@@ -11,16 +11,28 @@ class FirstTable: UIViewController {
     
     @IBOutlet weak var wpiszNick: UITextField!
     
-    // TODO: klawiatura i chowanie
-    // TODO: delegacja nicku do secondtable
+    
+    
+  
+
+  
     override func viewDidAppear(_ animated: Bool) {
         witaj(title: "Hello!", message: "Enter your name")
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+       
     }
+    
+    // przekazanie wpisanego przez gracza nicku do label w SecondTable.swift
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let secondTable = segue.destination as? SecondTable {
+            secondTable.playerNickValue = wpiszNick.text
+        }
+    }
+    
     // tworze komunikat proszący graca by wpisał nick do gry
     func witaj (title:String, message:String) {
         

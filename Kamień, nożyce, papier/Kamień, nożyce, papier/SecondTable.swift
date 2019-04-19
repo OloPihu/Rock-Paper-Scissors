@@ -17,20 +17,26 @@ class SecondTable: UIViewController {
     
     @IBOutlet weak var cpuScoreLabel: UILabel!
     
+    @IBOutlet weak var playerNameLabel: UILabel!
+    
     var playerScore = 0
     var cpuScore = 0
     
-    
+    var playerNickValue:String? = nil 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+       
+        playerNameLabel.text = playerNickValue
+        
+        
     }
     
     
     
     @IBAction func rockButton(_ sender: Any) {
         
+    
         let losowyZnak = arc4random_uniform(3) + 1
         // print("losowy znak to: \(losowyZnak)")
         cpuViewTabel.image = UIImage(named: "znak\(losowyZnak)")

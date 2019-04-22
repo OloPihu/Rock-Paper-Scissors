@@ -7,22 +7,100 @@
 
 import UIKit
 
-class FirstTable: UIViewController {
+class FirstTable: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var wpiszNick: UITextField!
+    @IBOutlet weak var enterNick: UITextField!
     
-    // TODO: klawiatura i chowanie
-    // TODO: delegacja nicku do secondtable
+    
+    
     override func viewDidAppear(_ animated: Bool) {
-        witaj(title: "Hello!", message: "Enter your name")
+        
+        if enterNick.text == "Players name" {
+            
+            hello(title: "Hello!", message: "Enter your name")
+            
+        } else {
+            
+            return
+            
+        }
+        
     }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        enterNick.text = "Players name"
+        enterNick.textColor = UIColor.lightGray
+        enterNick.font = UIFont(name: "verdana", size: 13.0)
+        
+        enterNick.delegate = self
+        
     }
+    
+    //MARK:- UITextViewDelegates
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if enterNick.text == "Players name" {
+            enterNick.text = ""
+            enterNick.textColor = UIColor.black
+            enterNick.font = UIFont(name: "verdana", size: 17.0)
+            
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.text == "\n" {
+            enterNick.resignFirstResponder()
+        }
+        return true
+    }
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if enterNick.text == "" {
+            
+            enterNick.text = "Players name"
+            enterNick.textColor = UIColor.lightGray
+            enterNick.font = UIFont(name: "verdana", size: 13.0)
+            
+        }
+        
+    }
+    
+    // chowanie sie klawiatury
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDeclare() {
+        
+        enterNick.placeholder = "Enter your name"
+        
+    }
+    
+    
+    // przekazanie wpisanego przez gracza nicku do label w SecondTable.swift
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+        
+        if let secondTable = segue.destination as? SecondTable {
+            secondTable.playerNickValue = enterNick.text!
+        }
+    }
+    
     // tworze komunikat proszący graca by wpisał nick do gry
-    func witaj (title:String, message:String) {
+    func hello (title:String, message:String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         
@@ -32,11 +110,6 @@ class FirstTable: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
         
-        
     }
-    
- 
-    
-    
     
 }

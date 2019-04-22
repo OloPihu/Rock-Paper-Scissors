@@ -10,31 +10,41 @@ import UIKit
 class SecondTable: UIViewController {
     
     
+    @IBOutlet weak var rock: UIButton!
+    
+    @IBOutlet weak var paper: UIButton!
+    
+    @IBOutlet weak var scissors: UIButton!
+    
     @IBOutlet weak var cpuViewTabel: UIImageView!
     
     @IBOutlet weak var playerScoreLabel: UILabel!
     
-    
     @IBOutlet weak var cpuScoreLabel: UILabel!
+    
+    @IBOutlet weak var playerNameLabel: UILabel!
     
     var playerScore = 0
     var cpuScore = 0
-    
+    var playerNickValue = ""
+    var winCondition = 5
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        playerNameLabel.text = playerNickValue
+        
     }
-    
-    
     
     @IBAction func rockButton(_ sender: Any) {
         
+        rock.isEnabled = true
+        print("rock")
         let losowyZnak = arc4random_uniform(3) + 1
         // print("losowy znak to: \(losowyZnak)")
         cpuViewTabel.image = UIImage(named: "znak\(losowyZnak)")
-        
+        print(losowyZnak)
         if losowyZnak == 1 {
             
         }
@@ -51,13 +61,12 @@ class SecondTable: UIViewController {
             playerScoreLabel.text = String(playerScore)
             
         }
-        
+        endGame()
     }
     
-    
-    
-    
     @IBAction func paperButton(_ sender: Any) {
+        
+        paper.isEnabled = true
         
         let losowyZnak = arc4random_uniform(3) + 1
         
@@ -78,7 +87,7 @@ class SecondTable: UIViewController {
             cpuScoreLabel.text = String(cpuScore)
             
         }
-        
+        endGame()
         
     }
     
@@ -87,6 +96,8 @@ class SecondTable: UIViewController {
     
     @IBAction func scissorsButton(_ sender: Any) {
         
+        scissors.isEnabled = true
+        
         let losowyZnak = arc4random_uniform(3) + 1
         
         cpuViewTabel.image = UIImage(named: "znak\(losowyZnak)")
@@ -104,23 +115,37 @@ class SecondTable: UIViewController {
         else if losowyZnak == 3 {
             
         }
+        endGame()
     }
     
     func endGame() {
-        if playerScore == 5 {
+        
+        if playerScore == winCondition {
             
-// dodac alert
+            rock.isEnabled = false
+            paper.isEnabled = false
+            scissors.isEnabled = false
+            
+       
+            endGameAlert(title: "Congratulations!", message: "\(String(describing: playerNameLabel.text!)) wins the game")
             
         }
-        else if cpuScore == 5 {
+        else if cpuScore == winCondition {
             
+            rock.isEnabled = false
+            paper.isEnabled = false
+            scissors.isEnabled = false
             
-      // dodac alert 
+            endGameAlert(title: "Bad luck!", message: "CPU wins the game")
         }
-    
-    
+        
+        
     }
     @IBAction func restartGameButton(_ sender: Any) {
+        
+        rock.isEnabled = true
+        paper.isEnabled = true
+        scissors.isEnabled = true
         
         cpuViewTabel.image = UIImage(named: "startcpu")
         
@@ -130,23 +155,16 @@ class SecondTable: UIViewController {
         cpuScoreLabel.text = String(cpuScore)
     }
     
-    
-    // towrze alert determinowany osiagnieciem okreslonego wyniku przez gracza lub cpu
     func endGameAlert (title:String, message:String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         
-        alert.addAction(UIAlertAction(title: "ok", style: UIAlertAction.Style.default, handler: { (action) in alert.dismiss(animated: true, completion: nil )
+        alert.addAction(UIAlertAction(title: "ok", style: UIAlertAction.Style.default, handler: { (action) in
             
-        }))
+        }
+        ))
         
-        self.present(alert, animated: true, completion: nil)
-        //TODO: skonczyc alert i warunki zwyciestwa
+        self.present(alert, animated: true)
         
     }
-    
-    
-    
-    
-    
 }
